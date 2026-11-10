@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeguraPro APP — Desenvolvimento de Aplicativos</title>
+  <meta name="description" content="SeguraPro APP: desenvolvimento de aplicativos mobile, web e corporativos sob medida. Penha/SC.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-2: #111832;
+      --card: #151d3b;
+      --line: #24305c;
+      --text: #e8ecf8;
+      --muted: #9aa5c8;
+      --accent: #2ee6a6;
+      --accent-2: #4c8dff;
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, .logo { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.02em; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1120px, 92%); margin: 0 auto; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(11, 16, 32, 0.75);
+      border-bottom: 1px solid var(--line);
+    }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { font-weight: 700; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+    .logo-mark {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center; color: var(--bg); font-weight: 700;
+    }
+    .logo span.app { color: var(--accent); }
+    nav ul { list-style: none; display: flex; gap: 28px; font-size: 0.95rem; color: var(--muted); }
+    nav ul a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero { position: relative; padding: 110px 0 90px; }
+    .hero::before {
+      content: ""; position: absolute; inset: -200px -100px auto auto;
+      width: 620px; height: 620px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(76,141,255,0.28), transparent 65%);
+      z-index: -1;
+    }
+    .hero::after {
+      content: ""; position: absolute; left: -160px; top: 220px;
+      width: 420px; height: 420px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(46,230,166,0.16), transparent 65%);
+      z-index: -1;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 56px; align-items: center; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--line); border-radius: 999px;
+      padding: 6px 14px; font-size: 0.85rem; color: var(--muted); margin-bottom: 24px;
+    }
+    .tag i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+    .hero h1 { font-size: clamp(2.4rem, 5vw, 3.9rem); line-height: 1.08; margin-bottom: 22px; }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero p { font-size: 1.12rem; color: var(--muted); max-width: 560px; margin-bottom: 34px; }
+    .btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      padding: 14px 26px; border-radius: 12px; font-weight: 600; font-size: 0.98rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(46,230,166,0.3); }
+    .btn-ghost { border: 1px solid var(--line); }
+    .btn-ghost:hover { border-color: var(--muted); }
+
+    /* PHONE MOCK */
+    .phone {
+      width: 260px; height: 520px; margin: 0 auto;
+      border-radius: 40px; padding: 14px;
+      background: linear-gradient(160deg, #1d2750, #0f1530);
+      border: 1px solid var(--line);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.45);
+      transform: rotate(4deg);
+    }
+    .screen {
+      width: 100%; height: 100%; border-radius: 28px; background: var(--bg-2);
+      padding: 26px 18px; display: flex; flex-direction: column; gap: 14px; overflow: hidden;
+    }
+    .screen .notch { width: 80px; height: 6px; border-radius: 6px; background: var(--line); margin: 0 auto 8px; }
+    .screen .hi { font-family: 'Space Grotesk'; font-weight: 700; font-size: 1.1rem; }
+    .screen .kpi {
+      border-radius: 14px; padding: 14px;
+      background: linear-gradient(135deg, rgba(46,230,166,0.18), rgba(76,141,255,0.18));
+      border: 1px solid var(--line);
+    }
+    .screen .kpi small { color: var(--muted); font-size: 0.72rem; }
+    .screen .kpi b { display: block; font-size: 1.5rem; font-family: 'Space Grotesk'; }
+    .bars { display: flex; align-items: flex-end; gap: 8px; height: 90px; padding: 0 4px; }
+    .bars div { flex: 1; border-radius: 6px 6px 2px 2px; background: var(--accent-2); opacity: .8; }
+    .bars div:nth-child(even) { background: var(--accent); }
+    .row { height: 38px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); }
+
+    /* SECTIONS */
+    section { padding: 90px 0; }
+    .eyebrow { color: var(--accent); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+    section h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); margin-bottom: 16px; }
+    .lead { color: var(--muted); max-width: 640px; margin-bottom: 48px; font-size: 1.05rem; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 30px; transition: transform .25s, border-color .25s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: var(--accent-2); }
+    .icon {
+      width: 48px; height: 48px; border-radius: 12px; margin-bottom: 20px;
+      display: grid; place-items: center; font-size: 1.4rem;
+      background: rgba(46,230,166,0.1); border: 1px solid rgba(46,230,166,0.3);
+    }
+    .card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: 0.97rem; }
+
+    /* PROCESS */
+    .alt { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; counter-reset: s; }
+    .step { position: relative; padding-top: 56px; }
+    .step::before {
+      counter-increment: s; content: "0" counter(s);
+      position: absolute; top: 0; left: 0;
+      font-family: 'Space Grotesk'; font-weight: 700; font-size: 2.2rem;
+      color: transparent; -webkit-text-stroke: 1px var(--accent);
+    }
+    .step h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .step p { color: var(--muted); font-size: 0.95rem; }
+
+    /* STACK */
+    .chips { display: flex; flex-wrap: wrap; gap: 12px; }
+    .chip {
+      padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line);
+      background: var(--card); font-size: 0.93rem; color: var(--text);
+    }
+
+    /* ABOUT */
+    .about { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+    .stat b { font-family: 'Space Grotesk'; font-size: 1.6rem; color: var(--accent); display: block; }
+    .stat span { color: var(--muted); font-size: 0.92rem; }
+
+    /* CTA */
+    .cta {
+      text-align: center; border-radius: 28px; padding: 70px 30px;
+      background: linear-gradient(135deg, rgba(46,230,166,0.14), rgba(76,141,255,0.2));
+      border: 1px solid var(--line);
+    }
+    .cta p { color: var(--muted); max-width: 560px; margin: 0 auto 30px; }
+    .cta .btns { justify-content: center; }
+
+    footer { border-top: 1px solid var(--line); padding: 30px 0; color: var(--muted); font-size: 0.9rem; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.show { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .hero-grid, .about { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .phone { transform: none; }
+      nav ul { display: none; }
+    }
+    @media (max-width: 600px) {
+      .grid-3, .steps, .stats { grid-template-columns: 1fr; }
+      .hero { padding-top: 70px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap">
+      <a href="#" class="logo"><div class="logo-mark">S</div>SeguraPro<span class="app">APP</span></a>
+      <ul>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#processo">Como trabalhamos</a></li>
+        <li><a href="#tecnologias">Tecnologias</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="tag"><i></i> Desenvolvimento de aplicativos sob medida</div>
+        <h1>Transformamos processos em <em>aplicativos que funcionam</em>.</h1>
+        <p>A SeguraPro APP cria aplicativos mobile, sistemas web e soluções corporativas que simplificam a rotina da sua empresa: do controle em campo aos painéis de gestão.</p>
+        <div class="btns">
+          <a href="#contato" class="btn btn-primary">Fale com a gente</a>
+          <a href="#servicos" class="btn btn-ghost">Ver serviços</a>
+        </div>
+      </div>
+      <div aria-hidden="true">
+        <div class="phone">
+          <div class="screen">
+            <div class="notch"></div>
+            <div class="hi">Olá, gestor 👋</div>
+            <div class="kpi"><small>Tarefas concluídas hoje</small><b>128</b></div>
+            <div class="bars">
+              <div style="height:40%"></div><div style="height:65%"></div><div style="height:50%"></div>
+              <div style="height:85%"></div><div style="height:70%"></div><div style="height:95%"></div>
+            </div>
+            <div class="row"></div><div class="row"></div><div class="row"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="servicos">
+    <div class="wrap">
+      <div class="eyebrow">Serviços</div>
+      <h2>O que desenvolvemos</h2>
+      <p class="lead">Soluções digitais pensadas para o dia a dia de quem opera, gerencia e decide.</p>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">📱</div>
+          <h3>Aplicativos Mobile</h3>
+          <p>Apps para Android e iOS com foco em usabilidade, funcionamento em campo e integração com os sistemas da empresa.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🌐</div>
+          <h3>Sistemas Web</h3>
+          <p>Plataformas acessíveis pelo navegador, com cadastro, controle de acesso, relatórios e painéis administrativos.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🏢</div>
+          <h3>Apps Corporativos</h3>
+          <p>Soluções low-code com Power Apps e Power Automate para digitalizar formulários, checklists e fluxos de aprovação.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">📊</div>
+          <h3>Dashboards e Indicadores</h3>
+          <p>Painéis de gestão que transformam dados operacionais em indicadores claros para tomada de decisão.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">⚙️</div>
+          <h3>Automação de Processos</h3>
+          <p>Scripts e robôs em Python que eliminam tarefas repetitivas, lançamentos manuais e retrabalho.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🛡️</div>
+          <h3>Soluções para SST</h3>
+          <p>Ferramentas digitais para gestão de segurança do trabalho: inspeções, ASOs, treinamentos e controle de documentos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="processo" class="alt">
+    <div class="wrap">
+      <div class="eyebrow">Como trabalhamos</div>
+      <h2>Do problema ao app publicado</h2>
+      <p class="lead">Um processo direto, com entregas parciais para você acompanhar cada etapa.</p>
+      <div class="steps">
+        <div class="step reveal"><h3>Diagnóstico</h3><p>Entendemos o processo atual, os usuários e o que precisa mudar.</p></div>
+        <div class="step reveal"><h3>Protótipo</h3><p>Desenhamos as telas e validamos o fluxo com você antes de programar.</p></div>
+        <div class="step reveal"><h3>Desenvolvimento</h3><p>Construímos em ciclos curtos, com versões de teste a cada entrega.</p></div>
+        <div class="step reveal"><h3>Implantação</h3><p>Publicamos, treinamos a equipe e seguimos dando suporte.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tecnologias">
+    <div class="wrap">
+      <div class="eyebrow">Tecnologias</div>
+      <h2>Ferramentas que usamos</h2>
+      <p class="lead">Escolhemos a tecnologia pelo problema, não o contrário.</p>
+      <div class="chips reveal">
+        <span class="chip">Python</span>
+        <span class="chip">JavaScript</span>
+        <span class="chip">HTML &amp; CSS</span>
+        <span class="chip">React</span>
+        <span class="chip">Flutter</span>
+        <span class="chip">Power Apps</span>
+        <span class="chip">Power Automate</span>
+        <span class="chip">Power BI</span>
+        <span class="chip">SharePoint</span>
+        <span class="chip">Excel / VBA</span>
+        <span class="chip">SQL</span>
+        <span class="chip">Git &amp; GitHub</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre" class="alt">
+    <div class="wrap about">
+      <div class="reveal">
+        <div class="eyebrow">Sobre</div>
+        <h2>Tecnologia com visão de operação</h2>
+        <p class="lead" style="margin-bottom:0">A SeguraPro APP nasceu em Penha, Santa Catarina, da experiência prática com logística, gestão de pessoas e segurança do trabalho. Por isso, nossos aplicativos são feitos para quem está na linha de frente: simples de usar, rápidos de implantar e conectados à realidade da operação.</p>
+      </div>
+      <div class="stats reveal">
+        <div class="stat"><b>Mobile</b><span>Apps para quem trabalha em campo</span></div>
+        <div class="stat"><b>Web</b><span>Sistemas acessíveis de qualquer lugar</span></div>
+        <div class="stat"><b>Dados</b><span>Indicadores e dashboards de gestão</span></div>
+        <div class="stat"><b>Suporte</b><span>Acompanhamento após a entrega</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato">
+    <div class="wrap">
+      <div class="cta reveal">
+        <div class="eyebrow">Contato</div>
+        <h2>Tem um processo que poderia virar app?</h2>
+        <p>Conte o que você precisa. Respondemos com uma proposta de solução e prazo.</p>
+        <div class="btns">
+          <a href="mailto:segurapro@outlook.com.br" class="btn btn-primary">segurapro@outlook.com.br</a>
+          <a href="mailto:segurapro.app@gmail.com" class="btn btn-primary">segurapro.app@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>© <span id="ano"></span> SeguraPro APP · Penha/SC</span>
+      <span>Desenvolvimento de aplicativos</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('ano').textContent = new Date().getFullYear();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
